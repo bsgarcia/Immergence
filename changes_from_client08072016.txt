@@ -1,0 +1,77 @@
+Bonjour Maxim,
+
+La première solution me semble adaptée : deux écrans avec les informations que vous avez spécifiées.
+En ce qui concerne le focus (la croix de fixation) elle apparaît uniquement une fois au début du trial.
+
+Bien à vous,
+Basile
+
+Le jeu. 17 oct. 2019 à 17:25, Maxim Frolov <Maxim.Frolov@malix.univ-paris1.fr> a écrit :
+
+    Bonjour Basile,
+
+    Merci pour l'information.
+    J'ai une question technique. Avec ce design, ce serait mieux de prévenir le joueur que d'abord "Ceci est un choix d'un autre joueur tiré au sort. [Vous n'avez donc pas de choix à faire]" et puis "Maintenant c'est à vous de faire le choix". Si vous êtes d'accord, alors faut-il le faire avec des messages affichés quelques seconds au milieu de l'écran sur un écran supplémentaire (comme un focus) avant l'exemple du choix d'un autre joueur, puis avant le vrai choix, ou en ajoutant simplement cette phrase en haut de l'écran sans ajouter d'écrans supplémentaires, ou les deux? Et à quel(s) moment(s) faut-il afficher le focus?
+
+    Merci.
+    Maxim
+
+
+
+    Basile Garcia <basilegarcia@gmail.com> a écrit :
+>     Bonjour à tous,
+>      
+>     @Maxim Frolov
+>     Après discussions avec Stefano, nous avons finalement décidé rester le plus proche possible de l'ancien design, ce qui permettra également de faciliter la programmation de la tâche. 
+>     Comme nous avions évoqué cette possibilité ensemble Maxim, nous préférons pour le moment simplement remplacer le panneau statistique (nommé Market sur les screenshots plus haut) par le panneau "social". 
+>
+>     Nous oublions donc l'idée du splitscreen qui complique pas mal les choses, autant en termes d'implémentation que pour la comparaison avec l'ancienne tâche. 
+>      
+>     Le panneau "social" : 
+>     On tire au sort un agent parmi tous les agents disponibles, donc tous les types peuvent être montrés. On montre dans un premier temps la proposition d'échange (comme sur le panneau "choice" des screenshots ) puis dans un second temps sa décision (Yes/No), avec un hightlight sur le yes ou le no (comme c'est déjà le cas lorsque le sujet choisit). 
+>     On ne montre pas le résultat de l'échange  (le panneau nommé "exchange" sur les screenshots). Il n'y a donc que l'étape "Choice" de l'agent artficiel qui est montrée au sujet. 
+>      
+>     Désolé pour le désagrément occasionné par ce revirement de design. Est-ce que vous avez besoin de plus d'information ?
+>      
+>     @Sacha Bourgeois-Gironde
+>
+>         Pour le biais d’optimisme dont parlait Stefano dans un mail ce matin, c’est uniquement au niveau du fitting des données, pas de variations dans les conditions?
+>
+>      
+>     Tout à fait ! C'est ce que l'on observe en fittant les données avec un modèle à deux learning rates (on observe l'asymétrie entre les deux learning rates dans la tâche Iwai avec Aurélien, mais il me semble que @Germain Lefebvre l'observait aussi sur sa tâche K&W). Ça peut être intéressant de voir dans quelle mesure ce biais que l'on retrouve régulièrement dans nos données expérimentales  affecte la convergence vers un équilibre monétaire !
+>      
+>
+>         Enfin, ici on choisit que l’information sociale soit donnée par un agent du même type que le sujet. C’est un choix simple et plus efficace. ( une autre possibilité aurait été que le sujet voie le comportement de différents agents).  
+>
+>      
+>     C'est ce qu'on se disait aussi avec Stefano dans un premier temps. Cependant en y réfléchissant davantage on a conclu que montrer tous les types serait mieux (toujours dans l'objectif de coller avec l'ancienne tâche qui elle montrait des statistiques sur les 3 types d'agent). 
+
+-------------
+Salut Maxim,
+
+Ca va bien?
+
+J'ai oublié un point important concernant ce que doit savoir faire le programme pour les prochaines passations.
+
+Je pense que ça ne demandera pas trop de temps niveau codage. L'idée c'est qu'à la fin, le sujet après le dernier trial (200 donc pour nous), ait le choix du partner qu'il va rencontrer lors d'une ultime période. Par exemple, le gars a le bien rose à la période 200. On lui demande juste après ça qui il veut rencontrer pour une ultime (201ème ici donc) rencontre. N'hésite pas si tu as des questions.
+
+Merci et à bientôt pour les tests,
+
+Germain
+
+
+
+
+Salut Maxim,
+
+En effet, il faut programmer ce choix avec les flèches du clavier(à vrai dire, avec la souris, cela pourrait fonctionner aussi)
+
+Pour le reste, il y a des changements de paramètres que nous pourrons voir ensemble (délai, beta, population, etc..) et:
+- Le choix, accepter ou refuser l'échange, avec validation qu'après quelques dixièmes de secondes d'appui sur la touche.
+- L'ultime choix dont je t'ai parlé dans le précédent mail.
+
+En ce qui concerne le budget, il s'agit d'un budget de l'ENS et je vais voir avec Mr Vergnaud pour remplir les formalités administratives.
+
+A très bientôt,
+
+Germain
