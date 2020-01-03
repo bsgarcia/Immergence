@@ -10,6 +10,7 @@ classdef Interface <handle
         plusInsteadOfRound=1;
         waitKeyAtGainInfo=1;
         spacesAtInfoScreen=1;
+        matchDemonstratorChoice=1;
         useTenPercGain=1;
         informGameState=0;
         showRandomOtherPair=1;

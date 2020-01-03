@@ -34,8 +34,13 @@ function [key time]=demonstrateRandomOtherChoice(this,R,Pl)
 			this.resetScreen();
 			this.drawExchangeQuestion(type1,good1,type2,good2,key,texts,textcolor,2);
 			Screen('Flip', this.window);
-			codes=[this.leftCode this.rightCode];
-			if(this.spacesAtInfoScreen); codes=this.spaceCode; end;
+            
+            if this.matchDemonstratorChoice
+                codes=[this.leftCode this.rightCode];
+                codes=codes(key+1);
+            else
+                codes=this.spaceCode;
+            end
 			WaitSecs(1);
 			[key time]=this.waitKeyPress(Inf,codes);
 			this.alreadyLaunched=1;
