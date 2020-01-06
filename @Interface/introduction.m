@@ -69,7 +69,7 @@ function introduction(this)
                 vbl=Screen('Flip',this.window,vbl + (waitframes-0.5)*ifi,1);
             end
             %Screen('Flip',this.window,0,0);
-            WaitSecs(10);
+            WaitSecs(this.introductionWaitTime);
             %toc
             %this.waitKeyPress();
 end

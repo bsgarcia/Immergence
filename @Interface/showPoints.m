@@ -118,7 +118,7 @@ if this.waitKeyAtGainInfo;
     if(this.plusInsteadOfRound); texttoshow='+'; end;
     this.alignText(texttoshow,this.rect,round(this.fontsize*1.7)); %['Round ',mat2str(this.nRound)] or '+'
     if 1; Screen('Flip',this.window,0,0); end; %this.alreadyLaunched
-    this.debPlusWaitSec=GetSecs();
+    this.debPlusWaitSec= GetSecs();
 end;
 end
 

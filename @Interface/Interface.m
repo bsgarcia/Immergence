@@ -13,6 +13,7 @@ classdef Interface <handle
         matchDemonstratorChoice=1;
         useTenPercGain=1;
         informGameState=0;
+        introductionWaitTime=6;
         showRandomOtherPair=1;
         useIntervalEverythere=0; % 0 will wait for a key press at proportion, exchange and informInsufficientFunds times only
         intervalValueIfUsed=30;
@@ -70,7 +71,7 @@ classdef Interface <handle
         
         function initializeWindow(this)
             addpath('mypsychtoolbox');
-            Screen('Preference', 'DefaultFontName', 'Arial');
+            Screen('Preference', 'DefaultFontName', 'Courier');
             %load frame;
             if (this.debug==0)
                 frame=OpenDisplay([]);
@@ -78,7 +79,7 @@ classdef Interface <handle
                 frame=OpenDisplay([1024 768]);%[1024 768]
             end
             this.frame=frame; this.window=frame.ptr; this.size=frame.size; 
-            Screen('TextFont', this.window,'Arial',1);
+            Screen('TextFont', this.window,'Courier',1);
             scaledRect=frame.rect*0.5;
             this.windowRect=frame.rect; this.rect=frame.rect;
             %this.windowRect=scaledRect; this.rect=scaledRect;
