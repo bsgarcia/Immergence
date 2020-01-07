@@ -64,12 +64,12 @@ classdef Round < handle
             end
         end
 
-        function [headers, data] = save(R)
+        function [headers data] = save(R)
             %saves the data
             currentDate = date;
-            headers = [{'Session'}, {'currentDate'}, {'nGame'}, {'nRound'}, {'randomSeed'}, {'lastRound'}];
+            headers = [{'Session'} {'currentDate'} {'nGame'} {'nRound'} {'randomSeed'} {'lastRound'}];
             %datadeb=[R.session {currentDate} R.nGame R.nRound RandStream.getDefaultStream.Seed R.lastRound];
-            datadeb = [R.session{currentDate}, R.nGame, R.nRound, RandStream.getGlobalStream.Seed, R.lastRound];
+            datadeb = [R.session {currentDate} R.nGame R.nRound RandStream.getGlobalStream.Seed R.lastRound];
             data = [];
             for i = 1:R.nPlayers
                 if (R.Players(i).real == 0);
@@ -86,15 +86,15 @@ classdef Round < handle
                 for v = vstart:length(playerVars) - 3
                     command = strcat('va=R.Players(', sprintf('%d', i), ').', playerVars{v, 1}, ';');
                     eval(command);
-                    datatemp = [datatemp{va}];
-                    tempheaders = [tempheaders{playerVars{v, 1}}];
+                    datatemp = [datatemp {va}];
+                    tempheaders = [tempheaders {playerVars{v, 1}}];
                 end
-                [propheaders, propdata] = R.proportionData();
-                datatemp = [datatemp, propdata];
-                tempheaders = [tempheaders, propheaders];
+                [propheaders propdata] = R.proportionData();
+                datatemp = [datatemp propdata];
+                tempheaders = [tempheaders propheaders];
                 data = [data; datatemp];
             end
-            headers = [headers, tempheaders];
+            headers = [headers tempheaders];
             %datafile=['data_sub' R.Players(1).realNumber];
             if R.nRound == 1 && R.nGame == 1
                 %cell2csv('header.xls', headers, char(9));
@@ -113,7 +113,7 @@ classdef Round < handle
             end;
         end
 
-        function [headers, data] = proportionData(R)
+        function [headers data] = proportionData(R)
             headers = [];
             data = [];
             proportionFields1 = fieldnames(R.Proportion);
@@ -121,8 +121,8 @@ classdef Round < handle
                 eval(strcat('proportionFields2=fieldnames(R.Proportion.', proportionFields1{f1, 1}, ');'));
                 for f2 = 1:length(proportionFields2);
                     eval(strcat('va=R.Proportion.', proportionFields1{f1, 1}, '.', proportionFields2{f2, 1}, ';'));
-                    data = [data{va}];
-                    headers = [headers{strcat('prop_', proportionFields1{f1, 1}, '_', proportionFields2{f2, 1})}];
+                    data = [data {va}];
+                    headers = [headers {strcat('prop_', proportionFields1{f1, 1}, '_', proportionFields2{f2, 1})}];
                 end
             end
         end
@@ -171,7 +171,7 @@ classdef Round < handle
                     for i = 1:maxgroups;
                         if (i == 1);
                             R.mancheOrders = R.groupOf6(:, randperm(size(R.groupOf6, 2)));
-                        else R.mancheOrders = [R.mancheOrders, R.groupOf6(:, randperm(size(R.groupOf6, 2)))];
+                        else R.mancheOrders = [R.mancheOrders R.groupOf6(:, randperm(size(R.groupOf6, 2)))];
                         end;
                     end;
                     permutationMade = 1;
