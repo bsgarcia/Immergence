@@ -1,0 +1,165 @@
+classdef Interface <handle
+    %Psychtoolbox interface for a player
+    %   Detailed explanation goes here
+    
+    properties (Constant)
+        frenchPossibleColors={'bleu', 'jaune', 'rose'};
+        possibleColors=Player.possibleGoods;
+        possibleTypes=Player.possibleTypes;
+        utility=Player.consumptionBenefit;
+        plusInsteadOfRound=1;
+        waitKeyAtGainInfo=1;
+        spacesAtInfoScreen=1;
+        matchDemonstratorChoice=1;
+        useTenPercGain=1;
+        informGameState=0;
+        showRandomOtherPair=1;
+        useIntervalEverythere=0; % 0 will wait for a key press at proportion, exchange and informInsufficientFunds times only
+        intervalValueIfUsed=30;
+        exchangeConfirmTime=0.3; % 0 to desactivaite, positive to force "confirm by pressing time" (in order to confirm the participant should insist by pressing the button more than the value of this parameter in seconds [a franction of a second e.g. 0.3]) at the "do you want to exchange" question - see askForExchange and shouldIExchange
+        useHeader=0;
+        useBottom=0;
+        noHintsInBottom=Player.noStockCost;
+    end
+    properties
+        type='';
+        myGoodColor='';
+        startGoodColor='';
+        debug=0;
+        nRound=0;
+        nGame=0;
+        lastGame=0;
+        wallet=100;
+        startWallet=100;
+    end
+    properties (Hidden)
+        frame=struct;
+        window=0;
+        size=[];
+        rect=[];
+        windowRect=[];
+        Images=struct;
+        fontsize=0;
+        magenta=[]; cmagenta=[]; cyan=[]; yellow=[]; black=[]; white=[]; gray=200; orange=[255 150 80];
+        colors=[];
+        alreadyLaunched=0;
+        alreadyLaunchedGameState=0;
+        headerPercent=0.1;
+        currentMeasureTime=0;
+        debPlusWaitSec=0;
+        leftCode=37;
+        rightCode=39;
+        spaceCode=KbName('space');
+    end    
+    methods
+        function this=Interface(type,debugmode)
+            if nargin<1 || isempty(type)
+                type='cyan';
+            end
+            if nargin<2
+                debugmode=0;
+            end
+            this.type=type; this.debug=debugmode;
+            this.initializeWindow;
+            if ismac
+                this.rightCode=79; this.leftCode=80;
+            end
+            %KbWait;
+            if (debugmode==0); Screen('Flip',this.window); end;
+        end
+        
+        function initializeWindow(this)
+            addpath('mypsychtoolbox');
+            Screen('Preference', 'DefaultFontName', 'Arial');
+            %load frame;
+            if (this.debug==0)
+                frame=OpenDisplay([]);
+            else
+                frame=OpenDisplay([1024 768]);%[1024 768]
+            end
+            this.frame=frame; this.window=frame.ptr; this.size=frame.size; 
+            Screen('TextFont', this.window,'Arial',1);
+            scaledRect=frame.rect*0.5;
+            this.windowRect=frame.rect; this.rect=frame.rect;
+            %this.windowRect=scaledRect; this.rect=scaledRect;
+            this.fontsize=round(this.size(1)/38);
+            oldsize=Screen('TextSize', this.window, this.fontsize);
+            this.black=BlackIndex(this.window); this.white=WhiteIndex(this.window);
+            load('Images','Images');
+            this.Images=Images;            
+            posstypes=this.possibleColors;
+            for i=1:length(posstypes)
+                eval(strcat('s=size(Images.bh',posstypes{i},');'));
+                eval(strcat('x(1:3)=Images.bh',posstypes{i},'(s(1)/2,s(2)/2,1:3);'));
+                eval(strcat('this.',posstypes{i},'=x'));
+                this.colors(i,:)=x;
+                eval(strcat('this.Images.cadre',posstypes{i},'=this.cadreColor(''',posstypes{i},''');'));
+            end
+            this.Images.cadreblack=this.cadreColor('black');
+            fnames=fieldnames(this.Images);
+            for i=1:length(fnames)
+                fieldname=fnames{i};
+                eval(strcat('Textures.',fieldname,'=Screen(''MakeTexture'', this.window, this.Images.',fieldname,');'));
+            end
+            this.Images=Textures;
+            this.alreadyLaunched=0;
+            HideCursor;
+       end
+        
+        
+        [rep time]=showPoints(this,consumption,stockCost,prodCost,Pl,R)
+        informRect=informStock(this,mygood)
+        [rep time]=informInsufficientFunds(this,startWallet,cost,costword,R)
+        
+        answer=shouldIExchange(this,othertype,othergood,Proportion,Pl,R)
+        informPartnersAnswer(this,othertype,othergood,partnersAnswer,myWill)
+        animExchange(this,othertype,othergood)
+        [rep time]=askForExchange(this,othertype,othergood,confirm)
+        [rep time]=demonstrateRandomOtherChoice(this,R,Pl)
+        drawExchangeQuestion(this,firsttype,firstgood,othertype,othergood,choosen,texts,textcolor,showbuttons)       
+        distance=drawExchangePicture(this,firsttype,firstgood,othertype,othergood,offset)     
+        askRect=drawAskButtons(this,choosen,notext,noimage)        
+        goodRect=drawSellerPicture(this,rect,good,type,opposite,offsetBall)
+        
+        [rep time]=showGameState(this,Proportion)
+        newrect=drawProportion(this,rect,playersProportions,type)
+        
+        introduction(this)
+        [key time]=waitPaperQuestionnaire(this,nSeconds)
+        pType=choosePartner(this)
+        [gamePayed gain proba gainEurSup totalGain key time]=infoGains(this,nowait)
+        [gamePayed tenPercInfo proba gainEurSup hlgain totalGain key time]=infoGains2(this,nowait,R)
+        [key time]=endExperiment(this)
+        
+        drawHeader(this,goodColor)
+        drawBottom(this,simple,onlyothers)
+        drawRound(this,n,pos)
+        resetScreen(this);
+        partialResetScreen(this);
+        
+    end
+    
+    methods (Hidden)
+        
+        textrect=adjoinText(this,text,rect,position,color,textsize,RectSize)
+        textrect=alignText(this,text,rect,textsize,color,pos1,pos2)
+        textrect=marginText(this,text,marginLeft,marginTop,textsize,color,rect)
+        imageRect=adjoinImage(this,rect,image)
+        
+        lineRect=showPointsLine(this,txtcell,rect1,rect2,bottom,imageorsign)
+        
+        color=findColor(this,type,frenchText)   
+        cadre=cadreColor(this,type)
+        bh=bhColor(this,type )   
+        image=setVisibleColor(this,image,color)
+        
+        [rep time]=waitKeyPress(this,timeout,keys)     
+        [rep time]=waitKeyRelease(this,timeout,keys)
+    end
+    
+    methods (Static)
+    end
+    
+
+end
+
