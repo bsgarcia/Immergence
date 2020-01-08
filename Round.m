@@ -112,7 +112,7 @@ classdef Round < handle
                 save gameRealWallets gameRealWallets;
             end;
         end
-
+        %
         function [headers data] = proportionData(R)
             headers = [];
             data = [];
